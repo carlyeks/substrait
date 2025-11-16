@@ -556,6 +556,210 @@ message ExpandRel {
   }
 }
 
+// The MATCH_RECOGNIZE relational operator for row pattern matching.
+// This operator enables detection of patterns in ordered rows, commonly used for
+// complex event processing, trend detection, and sequence analysis.
+//
+// Navigation Functions:
+// The following SQL pattern matching functions should be represented as scalar_function
+// calls within Expression fields (measures and pattern_definitions):
+//   - PREV(expr, offset): Access value from previous row
+//   - NEXT(expr, offset): Access value from next row
+//   - FIRST(expr): Value from first row in match
+//   - LAST(expr): Value from last row in match
+//   - CLASSIFIER(): Pattern variable name that matched current row
+//   - MATCH_NUMBER(): Sequential number of the match within partition
+//   - FINAL(expr): Value from last row of pattern (running semantic)
+//   - RUNNING(expr): Running aggregate within pattern match
+message MatchRecognizeRel {
+  RelCommon common = 1;
+
+  // Input relation to perform pattern matching on
+  Rel input = 2;
+
+  // PARTITION BY expressions - rows with the same partition key values are grouped together
+  repeated Expression partition_expressions = 3;
+
+  // ORDER BY clause - defines the order of rows within each partition for pattern matching
+  repeated SortField sorts = 4;
+
+  // MEASURES clause - defines the output columns calculated from matched patterns
+  repeated Measure measures = 5;
+
+  // Determines how many rows are output per match
+  RowPatternOutputMode output_mode = 6;
+
+  // AFTER MATCH SKIP clause - determines where to resume pattern matching after a match
+  AfterMatchSkip after_match_skip = 7;
+
+  // The row pattern to match (e.g., "A B+ C*")
+  Pattern pattern = 8;
+
+  // DEFINE clause - boolean conditions that define each pattern variable
+  repeated PatternDefinition pattern_definitions = 9;
+
+  // SUBSET clause - defines unions of pattern variables for referencing in MEASURES
+  repeated SubsetDefinition subset_definitions = 10;
+
+  // WITHIN clause - optional time-based interval constraint on pattern matches
+  // Specifies a maximum duration for the entire pattern match
+  // Example: PATTERN (A B+ C) WITHIN INTERVAL '10' MINUTE
+  Expression interval = 12;
+
+  // Whether the pattern must start at the beginning of the partition (^ anchor in regex)
+  // When true, the pattern match must start with the first row in the partition
+  // Example: PATTERN (^ A B C) means the match must start at partition beginning
+  bool strict_start = 13;
+
+  // Whether the pattern must end at the end of the partition ($ anchor in regex)
+  // When true, the pattern match must end with the last row in the partition
+  // Example: PATTERN (A B C $) means the match must end at partition end
+  bool strict_end = 14;
+
+  substrait.extensions.AdvancedExtension advanced_extension = 11;
+
+  // A measure expression that can reference pattern variables and use navigation functions
+  message Measure {
+    // The expression to compute, which may reference pattern variables
+    Expression expression = 1;
+  }
+
+  // Determines how many rows are output per pattern match
+  enum RowPatternOutputMode {
+    ROW_PATTERN_OUTPUT_MODE_UNSPECIFIED = 0;
+    // ONE ROW PER MATCH - outputs a single summary row per match
+    ROW_PATTERN_OUTPUT_MODE_ONE_ROW_PER_MATCH = 1;
+    // ALL ROWS PER MATCH - outputs one row per input row that participated in the match
+    ROW_PATTERN_OUTPUT_MODE_ALL_ROWS_PER_MATCH = 2;
+    // ALL ROWS PER MATCH WITH UNMATCHED ROWS - includes rows that didn't match
+    ROW_PATTERN_OUTPUT_MODE_ALL_ROWS_WITH_UNMATCHED = 3;
+  }
+
+  // Specifies where to resume pattern matching after finding a match
+  message AfterMatchSkip {
+    Strategy strategy = 1;
+    // The pattern variable name (used with TO_FIRST and TO_LAST strategies)
+    string pattern_variable = 2;
+
+    enum Strategy {
+      STRATEGY_UNSPECIFIED = 0;
+      // SKIP TO NEXT ROW - resume from the row after the match start
+      STRATEGY_TO_NEXT_ROW = 1;
+      // SKIP PAST LAST ROW - resume from the row after the match end
+      STRATEGY_PAST_LAST_ROW = 2;
+      // SKIP TO FIRST variable - resume from the first row mapped to the specified variable
+      STRATEGY_TO_FIRST = 3;
+      // SKIP TO LAST variable - resume from the last row mapped to the specified variable
+      STRATEGY_TO_LAST = 4;
+    }
+  }
+
+  // Represents a pattern expression (similar to regular expressions)
+  message Pattern {
+    oneof pattern_type {
+      // A single pattern variable (e.g., "A")
+      PatternVariable variable = 1;
+      // A sequence of patterns (e.g., "A B C")
+      PatternSequence sequence = 2;
+      // An alternation of patterns (e.g., "A | B")
+      PatternAlternation alternation = 3;
+      // A quantified pattern (e.g., "A+", "B*", "C{2,5}")
+      PatternQuantified quantified = 4;
+      // A permutation of patterns (e.g., "PERMUTE(A, B, C)")
+      PatternPermute permute = 5;
+      // A grouped pattern for precedence (e.g., "(A B)+")
+      PatternGroup group = 6;
+    }
+  }
+
+  // A single pattern variable reference
+  message PatternVariable {
+    // The name of the pattern variable (e.g., "A", "B", "START")
+    string name = 1;
+  }
+
+  // A sequence of patterns that must match in order
+  message PatternSequence {
+    repeated Pattern patterns = 1;
+  }
+
+  // An alternation (choice) between patterns
+  message PatternAlternation {
+    repeated Pattern patterns = 1;
+  }
+
+  // A pattern with a quantifier
+  message PatternQuantified {
+    // The pattern to quantify
+    Pattern pattern = 1;
+    // The quantifier specification
+    Quantifier quantifier = 2;
+    // Whether the quantifier is greedy (default true) or reluctant
+    bool greedy = 3;
+
+    // Quantifier types (*, +, ?, {n}, {n,}, {n,m})
+    message Quantifier {
+      oneof quantifier_type {
+        // * (zero or more)
+        ZeroOrMore zero_or_more = 1;
+        // + (one or more)
+        OneOrMore one_or_more = 2;
+        // ? (zero or one)
+        ZeroOrOne zero_or_one = 3;
+        // {n} (exactly n times)
+        Exactly exactly = 4;
+        // {n,} (at least n times)
+        AtLeast at_least = 5;
+        // {n,m} (between n and m times)
+        Between between = 6;
+      }
+
+      message ZeroOrMore {}
+      message OneOrMore {}
+      message ZeroOrOne {}
+
+      message Exactly {
+        int64 count = 1;
+      }
+
+      message AtLeast {
+        int64 min = 1;
+      }
+
+      message Between {
+        int64 min = 1;
+        int64 max = 2;
+      }
+    }
+  }
+
+  // A permutation of patterns (all must match but in any order)
+  message PatternPermute {
+    repeated Pattern patterns = 1;
+  }
+
+  // A grouped pattern for controlling precedence
+  message PatternGroup {
+    Pattern pattern = 1;
+  }
+
+  // DEFINE clause - associates a pattern variable with its defining condition
+  message PatternDefinition {
+    // The name of the pattern variable being defined
+    string variable_name = 1;
+    // Boolean expression that must be true for a row to be classified as this variable
+    Expression condition = 2;
+  }
+
+  // SUBSET clause - defines a union of pattern variables
+  message SubsetDefinition {
+    // The name of the subset
+    string subset_name = 1;
+    // The pattern variables that comprise this subset
+    repeated string variable_names = 2;
+  }
+}
+
 // A relation with output field names.
 //
 // This is for use at the root of a `Rel` tree.
@@ -592,6 +796,7 @@ message Rel {
     ConsistentPartitionWindowRel window = 17;
     ExchangeRel exchange = 15;
     ExpandRel expand = 16;
+    MatchRecognizeRel match_recognize = 23;
   }
 }
 
