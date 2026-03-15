@@ -1,0 +1,63 @@
+{
+  "relations": [
+    {
+      "root": {
+        "input": {
+          "read": {
+            "common": {
+              "direct": {}
+            },
+            "baseSchema": {
+              "names": [
+                "n_nationkey",
+                "n_name",
+                "n_regionkey",
+                "n_comment"
+              ],
+              "struct": {
+                "types": [
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_REQUIRED"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_REQUIRED"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_REQUIRED"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  }
+                ],
+                "nullability": "NULLABILITY_REQUIRED"
+              }
+            },
+            "namedTable": {
+              "names": [
+                "nation"
+              ]
+            }
+          }
+        },
+        "names": [
+          "n_nationkey",
+          "n_name",
+          "n_regionkey",
+          "n_comment"
+        ]
+      }
+    }
+  ],
+  "version": {
+    "minorNumber": 79
+  },
+  "sql_query": "SELECT * FROM nation"
+}

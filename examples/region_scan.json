@@ -1,0 +1,56 @@
+{
+  "relations": [
+    {
+      "root": {
+        "input": {
+          "read": {
+            "common": {
+              "direct": {}
+            },
+            "baseSchema": {
+              "names": [
+                "r_regionkey",
+                "r_name",
+                "r_comment"
+              ],
+              "struct": {
+                "types": [
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_REQUIRED"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_REQUIRED"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  }
+                ],
+                "nullability": "NULLABILITY_REQUIRED"
+              }
+            },
+            "namedTable": {
+              "names": [
+                "region"
+              ]
+            }
+          }
+        },
+        "names": [
+          "r_regionkey",
+          "r_name",
+          "r_comment"
+        ]
+      }
+    }
+  ],
+  "version": {
+    "minorNumber": 79
+  },
+  "sql_query": "SELECT * FROM region"
+}

@@ -1,0 +1,253 @@
+{
+  "extensionUris": [
+    {
+      "extensionUriAnchor": 4,
+      "uri": "https://github.com/substrait-io/substrait/blob/main/extensions/functions_boolean.yaml"
+    },
+    {
+      "extensionUriAnchor": 10,
+      "uri": "https://github.com/substrait-io/substrait/blob/main/extensions/functions_comparison.yaml"
+    }
+  ],
+  "extensions": [
+    {
+      "extensionFunction": {
+        "extensionUriReference": 4,
+        "functionAnchor": 222,
+        "name": "bool_and:bool",
+        "extensionUrnReference": 4
+      }
+    },
+    {
+      "extensionFunction": {
+        "extensionUriReference": 10,
+        "functionAnchor": 266,
+        "name": "gt:any_any",
+        "extensionUrnReference": 10
+      }
+    }
+  ],
+  "relations": [
+    {
+      "root": {
+        "input": {
+          "aggregate": {
+            "input": {
+              "read": {
+                "common": {
+                  "direct": {}
+                },
+                "baseSchema": {
+                  "names": [
+                    "l_orderkey",
+                    "l_partkey",
+                    "l_suppkey",
+                    "l_linenumber",
+                    "l_quantity",
+                    "l_extendedprice",
+                    "l_discount",
+                    "l_tax",
+                    "l_returnflag",
+                    "l_linestatus",
+                    "l_shipdate",
+                    "l_commitdate",
+                    "l_receiptdate",
+                    "l_shipinstruct",
+                    "l_shipmode",
+                    "l_comment"
+                  ],
+                  "struct": {
+                    "types": [
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "i32": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "fp64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "fp64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "fp64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "fp64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "date": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "date": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "date": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      }
+                    ],
+                    "nullability": "NULLABILITY_REQUIRED"
+                  }
+                },
+                "namedTable": {
+                  "names": [
+                    "lineitem"
+                  ]
+                }
+              }
+            },
+            "groupings": [
+              {
+                "groupingExpressions": [
+                  {
+                    "selection": {
+                      "directReference": {
+                        "structField": {
+                          "field": 8
+                        }
+                      },
+                      "rootReference": {}
+                    }
+                  }
+                ],
+                "expressionReferences": [
+                  0
+                ]
+              }
+            ],
+            "measures": [
+              {
+                "measure": {
+                  "functionReference": 222,
+                  "outputType": {
+                    "bool": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "value": {
+                        "scalarFunction": {
+                          "functionReference": 266,
+                          "outputType": {
+                            "bool": {
+                              "nullability": "NULLABILITY_REQUIRED"
+                            }
+                          },
+                          "arguments": [
+                            {
+                              "value": {
+                                "selection": {
+                                  "directReference": {
+                                    "structField": {
+                                      "field": 4
+                                    }
+                                  },
+                                  "rootReference": {}
+                                }
+                              }
+                            },
+                            {
+                              "value": {
+                                "literal": {
+                                  "fp64": 0.0
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "groupingExpressions": [
+              {
+                "selection": {
+                  "directReference": {
+                    "structField": {
+                      "field": 8
+                    }
+                  },
+                  "rootReference": {}
+                }
+              }
+            ]
+          }
+        },
+        "names": [
+          "l_returnflag",
+          "IfThen(gt(l_quantity,Literal(0.0)))"
+        ]
+      }
+    }
+  ],
+  "version": {
+    "minorNumber": 79
+  },
+  "extensionUrns": [
+    {
+      "extensionUrnAnchor": 4,
+      "urn": "extension:io.substrait:functions_boolean"
+    },
+    {
+      "extensionUrnAnchor": 10,
+      "urn": "extension:io.substrait:functions_comparison"
+    }
+  ],
+  "sql_query": "SELECT l_returnflag, BOOL_AND(l_quantity > 0) FROM lineitem GROUP BY l_returnflag"
+}

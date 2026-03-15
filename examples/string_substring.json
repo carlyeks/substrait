@@ -1,0 +1,158 @@
+{
+  "extensionUris": [
+    {
+      "extensionUriAnchor": 14,
+      "uri": "https://github.com/substrait-io/substrait/blob/main/extensions/functions_string.yaml"
+    }
+  ],
+  "extensions": [
+    {
+      "extensionFunction": {
+        "extensionUriReference": 14,
+        "functionAnchor": 416,
+        "name": "substring:str_i32_i32",
+        "extensionUrnReference": 14
+      }
+    }
+  ],
+  "relations": [
+    {
+      "root": {
+        "input": {
+          "project": {
+            "input": {
+              "read": {
+                "common": {
+                  "direct": {}
+                },
+                "baseSchema": {
+                  "names": [
+                    "c_custkey",
+                    "c_name",
+                    "c_address",
+                    "c_nationkey",
+                    "c_phone",
+                    "c_acctbal",
+                    "c_mktsegment",
+                    "c_comment"
+                  ],
+                  "struct": {
+                    "types": [
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "fp64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      }
+                    ],
+                    "nullability": "NULLABILITY_REQUIRED"
+                  }
+                },
+                "namedTable": {
+                  "names": [
+                    "customer"
+                  ]
+                }
+              }
+            },
+            "expressions": [
+              {
+                "scalarFunction": {
+                  "functionReference": 416,
+                  "outputType": {
+                    "string": {
+                      "nullability": "NULLABILITY_REQUIRED"
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "value": {
+                        "selection": {
+                          "directReference": {
+                            "structField": {
+                              "field": 1
+                            }
+                          },
+                          "rootReference": {}
+                        }
+                      }
+                    },
+                    {
+                      "value": {
+                        "literal": {
+                          "i32": 1
+                        }
+                      }
+                    },
+                    {
+                      "value": {
+                        "literal": {
+                          "i32": 8
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "names": [
+          "c_custkey",
+          "c_name",
+          "c_address",
+          "c_nationkey",
+          "c_phone",
+          "c_acctbal",
+          "c_mktsegment",
+          "c_comment",
+          "substring(c_name,Literal(1),Literal(8))"
+        ]
+      }
+    }
+  ],
+  "version": {
+    "minorNumber": 79
+  },
+  "extensionUrns": [
+    {
+      "extensionUrnAnchor": 14,
+      "urn": "extension:io.substrait:functions_string"
+    }
+  ],
+  "sql_query": "SELECT SUBSTRING(c_name, 1, 8) FROM customer"
+}

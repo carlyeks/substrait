@@ -1,0 +1,310 @@
+{
+  "extensionUris": [
+    {
+      "extensionUriAnchor": 10,
+      "uri": "https://github.com/substrait-io/substrait/blob/main/extensions/functions_comparison.yaml"
+    }
+  ],
+  "extensions": [
+    {
+      "extensionFunction": {
+        "extensionUriReference": 10,
+        "functionAnchor": 262,
+        "name": "equal:any_any",
+        "extensionUrnReference": 10
+      }
+    },
+    {
+      "extensionFunction": {
+        "extensionUriReference": 10,
+        "functionAnchor": 268,
+        "name": "gte:any_any",
+        "extensionUrnReference": 10
+      }
+    }
+  ],
+  "relations": [
+    {
+      "root": {
+        "input": {
+          "project": {
+            "common": {
+              "emit": {
+                "outputMapping": [
+                  17,
+                  18,
+                  19
+                ]
+              }
+            },
+            "input": {
+              "filter": {
+                "input": {
+                  "join": {
+                    "left": {
+                      "read": {
+                        "common": {
+                          "direct": {}
+                        },
+                        "baseSchema": {
+                          "names": [
+                            "o_orderkey",
+                            "o_custkey",
+                            "o_orderstatus",
+                            "o_totalprice",
+                            "o_orderdate",
+                            "o_orderpriority",
+                            "o_clerk",
+                            "o_shippriority",
+                            "o_comment"
+                          ],
+                          "struct": {
+                            "types": [
+                              {
+                                "i64": {
+                                  "nullability": "NULLABILITY_REQUIRED"
+                                }
+                              },
+                              {
+                                "i64": {
+                                  "nullability": "NULLABILITY_REQUIRED"
+                                }
+                              },
+                              {
+                                "string": {
+                                  "nullability": "NULLABILITY_REQUIRED"
+                                }
+                              },
+                              {
+                                "fp64": {
+                                  "nullability": "NULLABILITY_REQUIRED"
+                                }
+                              },
+                              {
+                                "date": {
+                                  "nullability": "NULLABILITY_REQUIRED"
+                                }
+                              },
+                              {
+                                "string": {
+                                  "nullability": "NULLABILITY_NULLABLE"
+                                }
+                              },
+                              {
+                                "string": {
+                                  "nullability": "NULLABILITY_NULLABLE"
+                                }
+                              },
+                              {
+                                "i32": {
+                                  "nullability": "NULLABILITY_REQUIRED"
+                                }
+                              },
+                              {
+                                "string": {
+                                  "nullability": "NULLABILITY_NULLABLE"
+                                }
+                              }
+                            ],
+                            "nullability": "NULLABILITY_REQUIRED"
+                          }
+                        },
+                        "namedTable": {
+                          "names": [
+                            "orders"
+                          ]
+                        }
+                      }
+                    },
+                    "right": {
+                      "read": {
+                        "common": {
+                          "direct": {}
+                        },
+                        "baseSchema": {
+                          "names": [
+                            "c_custkey",
+                            "c_name",
+                            "c_address",
+                            "c_nationkey",
+                            "c_phone",
+                            "c_acctbal",
+                            "c_mktsegment",
+                            "c_comment"
+                          ],
+                          "struct": {
+                            "types": [
+                              {
+                                "i64": {
+                                  "nullability": "NULLABILITY_REQUIRED"
+                                }
+                              },
+                              {
+                                "string": {
+                                  "nullability": "NULLABILITY_REQUIRED"
+                                }
+                              },
+                              {
+                                "string": {
+                                  "nullability": "NULLABILITY_NULLABLE"
+                                }
+                              },
+                              {
+                                "i64": {
+                                  "nullability": "NULLABILITY_REQUIRED"
+                                }
+                              },
+                              {
+                                "string": {
+                                  "nullability": "NULLABILITY_NULLABLE"
+                                }
+                              },
+                              {
+                                "fp64": {
+                                  "nullability": "NULLABILITY_REQUIRED"
+                                }
+                              },
+                              {
+                                "string": {
+                                  "nullability": "NULLABILITY_NULLABLE"
+                                }
+                              },
+                              {
+                                "string": {
+                                  "nullability": "NULLABILITY_NULLABLE"
+                                }
+                              }
+                            ],
+                            "nullability": "NULLABILITY_REQUIRED"
+                          }
+                        },
+                        "namedTable": {
+                          "names": [
+                            "customer"
+                          ]
+                        }
+                      }
+                    },
+                    "expression": {
+                      "scalarFunction": {
+                        "functionReference": 262,
+                        "outputType": {
+                          "bool": {
+                            "nullability": "NULLABILITY_REQUIRED"
+                          }
+                        },
+                        "arguments": [
+                          {
+                            "value": {
+                              "selection": {
+                                "directReference": {
+                                  "structField": {
+                                    "field": 1
+                                  }
+                                },
+                                "rootReference": {}
+                              }
+                            }
+                          },
+                          {
+                            "value": {
+                              "selection": {
+                                "directReference": {
+                                  "structField": {
+                                    "field": 9
+                                  }
+                                },
+                                "rootReference": {}
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "type": "JOIN_TYPE_INNER"
+                  }
+                },
+                "condition": {
+                  "scalarFunction": {
+                    "functionReference": 268,
+                    "outputType": {
+                      "bool": {
+                        "nullability": "NULLABILITY_REQUIRED"
+                      }
+                    },
+                    "arguments": [
+                      {
+                        "value": {
+                          "selection": {
+                            "directReference": {
+                              "structField": {
+                                "field": 3
+                              }
+                            },
+                            "rootReference": {}
+                          }
+                        }
+                      },
+                      {
+                        "value": {
+                          "literal": {
+                            "fp64": 5000.0
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "expressions": [
+              {
+                "selection": {
+                  "directReference": {
+                    "structField": {}
+                  },
+                  "rootReference": {}
+                }
+              },
+              {
+                "selection": {
+                  "directReference": {
+                    "structField": {
+                      "field": 3
+                    }
+                  },
+                  "rootReference": {}
+                }
+              },
+              {
+                "selection": {
+                  "directReference": {
+                    "structField": {
+                      "field": 10
+                    }
+                  },
+                  "rootReference": {}
+                }
+              }
+            ]
+          }
+        },
+        "names": [
+          "o_orderkey",
+          "o_totalprice",
+          "c_name"
+        ]
+      }
+    }
+  ],
+  "version": {
+    "minorNumber": 79
+  },
+  "extensionUrns": [
+    {
+      "extensionUrnAnchor": 10,
+      "urn": "extension:io.substrait:functions_comparison"
+    }
+  ],
+  "sql_query": "SELECT o_orderkey, o_totalprice, c_name FROM orders INNER JOIN customer ON o_custkey = c_custkey WHERE o_totalprice >= 5000"
+}

@@ -1,0 +1,148 @@
+{
+  "extensionUris": [
+    {
+      "extensionUriAnchor": 10,
+      "uri": "https://github.com/substrait-io/substrait/blob/main/extensions/functions_comparison.yaml"
+    }
+  ],
+  "extensions": [
+    {
+      "extensionFunction": {
+        "extensionUriReference": 10,
+        "functionAnchor": 266,
+        "name": "gt:any_any",
+        "extensionUrnReference": 10
+      }
+    }
+  ],
+  "relations": [
+    {
+      "root": {
+        "input": {
+          "filter": {
+            "input": {
+              "read": {
+                "common": {
+                  "direct": {}
+                },
+                "baseSchema": {
+                  "names": [
+                    "c_custkey",
+                    "c_name",
+                    "c_address",
+                    "c_nationkey",
+                    "c_phone",
+                    "c_acctbal",
+                    "c_mktsegment",
+                    "c_comment"
+                  ],
+                  "struct": {
+                    "types": [
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "fp64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      }
+                    ],
+                    "nullability": "NULLABILITY_REQUIRED"
+                  }
+                },
+                "namedTable": {
+                  "names": [
+                    "customer"
+                  ]
+                }
+              }
+            },
+            "condition": {
+              "scalarFunction": {
+                "functionReference": 266,
+                "outputType": {
+                  "bool": {
+                    "nullability": "NULLABILITY_REQUIRED"
+                  }
+                },
+                "arguments": [
+                  {
+                    "value": {
+                      "selection": {
+                        "directReference": {
+                          "structField": {
+                            "field": 5
+                          }
+                        },
+                        "rootReference": {}
+                      }
+                    }
+                  },
+                  {
+                    "value": {
+                      "literal": {
+                        "fp64": 0.0
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "names": [
+          "c_custkey",
+          "c_name",
+          "c_address",
+          "c_nationkey",
+          "c_phone",
+          "c_acctbal",
+          "c_mktsegment",
+          "c_comment"
+        ]
+      }
+    }
+  ],
+  "version": {
+    "minorNumber": 79
+  },
+  "extensionUrns": [
+    {
+      "extensionUrnAnchor": 10,
+      "urn": "extension:io.substrait:functions_comparison"
+    }
+  ],
+  "sql_query": "SELECT * FROM customer WHERE c_acctbal > 0"
+}

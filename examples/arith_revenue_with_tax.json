@@ -1,0 +1,296 @@
+{
+  "extensionUris": [
+    {
+      "extensionUriAnchor": 2,
+      "uri": "https://github.com/substrait-io/substrait/blob/main/extensions/functions_arithmetic.yaml"
+    }
+  ],
+  "extensions": [
+    {
+      "extensionFunction": {
+        "extensionUriReference": 2,
+        "functionAnchor": 37,
+        "name": "multiply:fp64_fp64",
+        "extensionUrnReference": 2
+      }
+    },
+    {
+      "extensionFunction": {
+        "extensionUriReference": 2,
+        "functionAnchor": 31,
+        "name": "subtract:fp64_fp64",
+        "extensionUrnReference": 2
+      }
+    },
+    {
+      "extensionFunction": {
+        "extensionUriReference": 2,
+        "functionAnchor": 25,
+        "name": "add:fp64_fp64",
+        "extensionUrnReference": 2
+      }
+    }
+  ],
+  "relations": [
+    {
+      "root": {
+        "input": {
+          "project": {
+            "input": {
+              "read": {
+                "common": {
+                  "direct": {}
+                },
+                "baseSchema": {
+                  "names": [
+                    "l_orderkey",
+                    "l_partkey",
+                    "l_suppkey",
+                    "l_linenumber",
+                    "l_quantity",
+                    "l_extendedprice",
+                    "l_discount",
+                    "l_tax",
+                    "l_returnflag",
+                    "l_linestatus",
+                    "l_shipdate",
+                    "l_commitdate",
+                    "l_receiptdate",
+                    "l_shipinstruct",
+                    "l_shipmode",
+                    "l_comment"
+                  ],
+                  "struct": {
+                    "types": [
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "i32": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "fp64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "fp64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "fp64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "fp64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "date": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "date": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "date": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      }
+                    ],
+                    "nullability": "NULLABILITY_REQUIRED"
+                  }
+                },
+                "namedTable": {
+                  "names": [
+                    "lineitem"
+                  ]
+                }
+              }
+            },
+            "expressions": [
+              {
+                "scalarFunction": {
+                  "functionReference": 37,
+                  "outputType": {
+                    "fp64": {
+                      "nullability": "NULLABILITY_REQUIRED"
+                    }
+                  },
+                  "arguments": [
+                    {
+                      "value": {
+                        "scalarFunction": {
+                          "functionReference": 37,
+                          "outputType": {
+                            "fp64": {
+                              "nullability": "NULLABILITY_REQUIRED"
+                            }
+                          },
+                          "arguments": [
+                            {
+                              "value": {
+                                "selection": {
+                                  "directReference": {
+                                    "structField": {
+                                      "field": 5
+                                    }
+                                  },
+                                  "rootReference": {}
+                                }
+                              }
+                            },
+                            {
+                              "value": {
+                                "scalarFunction": {
+                                  "functionReference": 31,
+                                  "outputType": {
+                                    "fp64": {
+                                      "nullability": "NULLABILITY_REQUIRED"
+                                    }
+                                  },
+                                  "arguments": [
+                                    {
+                                      "value": {
+                                        "literal": {
+                                          "fp64": 1.0
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "value": {
+                                        "selection": {
+                                          "directReference": {
+                                            "structField": {
+                                              "field": 6
+                                            }
+                                          },
+                                          "rootReference": {}
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "value": {
+                        "scalarFunction": {
+                          "functionReference": 25,
+                          "outputType": {
+                            "fp64": {
+                              "nullability": "NULLABILITY_REQUIRED"
+                            }
+                          },
+                          "arguments": [
+                            {
+                              "value": {
+                                "literal": {
+                                  "fp64": 1.0
+                                }
+                              }
+                            },
+                            {
+                              "value": {
+                                "selection": {
+                                  "directReference": {
+                                    "structField": {
+                                      "field": 7
+                                    }
+                                  },
+                                  "rootReference": {}
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "names": [
+          "l_orderkey",
+          "l_partkey",
+          "l_suppkey",
+          "l_linenumber",
+          "l_quantity",
+          "l_extendedprice",
+          "l_discount",
+          "l_tax",
+          "l_returnflag",
+          "l_linestatus",
+          "l_shipdate",
+          "l_commitdate",
+          "l_receiptdate",
+          "l_shipinstruct",
+          "l_shipmode",
+          "l_comment",
+          "multiply(multiply(l_extendedprice,subtract(Literal(1.0),l_discount)),add(Literal(1.0),l_tax))"
+        ]
+      }
+    }
+  ],
+  "version": {
+    "minorNumber": 79
+  },
+  "extensionUrns": [
+    {
+      "extensionUrnAnchor": 2,
+      "urn": "extension:io.substrait:functions_arithmetic"
+    }
+  ],
+  "sql_query": "SELECT l_extendedprice * (1 - l_discount) * (1 + l_tax) FROM lineitem"
+}

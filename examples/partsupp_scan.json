@@ -1,0 +1,70 @@
+{
+  "relations": [
+    {
+      "root": {
+        "input": {
+          "read": {
+            "common": {
+              "direct": {}
+            },
+            "baseSchema": {
+              "names": [
+                "ps_partkey",
+                "ps_suppkey",
+                "ps_availqty",
+                "ps_supplycost",
+                "ps_comment"
+              ],
+              "struct": {
+                "types": [
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_REQUIRED"
+                    }
+                  },
+                  {
+                    "i64": {
+                      "nullability": "NULLABILITY_REQUIRED"
+                    }
+                  },
+                  {
+                    "i32": {
+                      "nullability": "NULLABILITY_REQUIRED"
+                    }
+                  },
+                  {
+                    "fp64": {
+                      "nullability": "NULLABILITY_REQUIRED"
+                    }
+                  },
+                  {
+                    "string": {
+                      "nullability": "NULLABILITY_NULLABLE"
+                    }
+                  }
+                ],
+                "nullability": "NULLABILITY_REQUIRED"
+              }
+            },
+            "namedTable": {
+              "names": [
+                "partsupp"
+              ]
+            }
+          }
+        },
+        "names": [
+          "ps_partkey",
+          "ps_suppkey",
+          "ps_availqty",
+          "ps_supplycost",
+          "ps_comment"
+        ]
+      }
+    }
+  ],
+  "version": {
+    "minorNumber": 79
+  },
+  "sql_query": "SELECT * FROM partsupp"
+}

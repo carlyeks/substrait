@@ -1,0 +1,107 @@
+{
+  "relations": [
+    {
+      "root": {
+        "input": {
+          "fetch": {
+            "input": {
+              "read": {
+                "common": {
+                  "direct": {}
+                },
+                "baseSchema": {
+                  "names": [
+                    "o_orderkey",
+                    "o_custkey",
+                    "o_orderstatus",
+                    "o_totalprice",
+                    "o_orderdate",
+                    "o_orderpriority",
+                    "o_clerk",
+                    "o_shippriority",
+                    "o_comment"
+                  ],
+                  "struct": {
+                    "types": [
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "fp64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "date": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "i32": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      }
+                    ],
+                    "nullability": "NULLABILITY_REQUIRED"
+                  }
+                },
+                "namedTable": {
+                  "names": [
+                    "orders"
+                  ]
+                }
+              }
+            },
+            "countExpr": {
+              "literal": {
+                "i64": "10"
+              }
+            }
+          }
+        },
+        "names": [
+          "o_orderkey",
+          "o_custkey",
+          "o_orderstatus",
+          "o_totalprice",
+          "o_orderdate",
+          "o_orderpriority",
+          "o_clerk",
+          "o_shippriority",
+          "o_comment"
+        ]
+      }
+    }
+  ],
+  "version": {
+    "minorNumber": 79
+  },
+  "sql_query": "SELECT * FROM orders LIMIT 10"
+}

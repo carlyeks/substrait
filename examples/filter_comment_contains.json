@@ -1,0 +1,141 @@
+{
+  "extensionUris": [
+    {
+      "extensionUriAnchor": 14,
+      "uri": "https://github.com/substrait-io/substrait/blob/main/extensions/functions_string.yaml"
+    }
+  ],
+  "extensions": [
+    {
+      "extensionFunction": {
+        "extensionUriReference": 14,
+        "functionAnchor": 447,
+        "name": "contains:str_str",
+        "extensionUrnReference": 14
+      }
+    }
+  ],
+  "relations": [
+    {
+      "root": {
+        "input": {
+          "filter": {
+            "input": {
+              "read": {
+                "common": {
+                  "direct": {}
+                },
+                "baseSchema": {
+                  "names": [
+                    "s_suppkey",
+                    "s_name",
+                    "s_address",
+                    "s_nationkey",
+                    "s_phone",
+                    "s_acctbal",
+                    "s_comment"
+                  ],
+                  "struct": {
+                    "types": [
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "fp64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      }
+                    ],
+                    "nullability": "NULLABILITY_REQUIRED"
+                  }
+                },
+                "namedTable": {
+                  "names": [
+                    "supplier"
+                  ]
+                }
+              }
+            },
+            "condition": {
+              "scalarFunction": {
+                "functionReference": 447,
+                "outputType": {
+                  "bool": {
+                    "nullability": "NULLABILITY_NULLABLE"
+                  }
+                },
+                "arguments": [
+                  {
+                    "value": {
+                      "selection": {
+                        "directReference": {
+                          "structField": {
+                            "field": 6
+                          }
+                        },
+                        "rootReference": {}
+                      }
+                    }
+                  },
+                  {
+                    "value": {
+                      "literal": {
+                        "string": "Customer"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "names": [
+          "s_suppkey",
+          "s_name",
+          "s_address",
+          "s_nationkey",
+          "s_phone",
+          "s_acctbal",
+          "s_comment"
+        ]
+      }
+    }
+  ],
+  "version": {
+    "minorNumber": 79
+  },
+  "extensionUrns": [
+    {
+      "extensionUrnAnchor": 14,
+      "urn": "extension:io.substrait:functions_string"
+    }
+  ],
+  "sql_query": "SELECT * FROM supplier WHERE s_comment LIKE '%Customer%'"
+}

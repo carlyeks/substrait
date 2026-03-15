@@ -1,0 +1,203 @@
+{
+  "extensionUris": [
+    {
+      "extensionUriAnchor": 10,
+      "uri": "https://github.com/substrait-io/substrait/blob/main/extensions/functions_comparison.yaml"
+    }
+  ],
+  "extensions": [
+    {
+      "extensionFunction": {
+        "extensionUriReference": 10,
+        "functionAnchor": 262,
+        "name": "equal:any_any",
+        "extensionUrnReference": 10
+      }
+    }
+  ],
+  "relations": [
+    {
+      "root": {
+        "input": {
+          "join": {
+            "left": {
+              "read": {
+                "common": {
+                  "direct": {}
+                },
+                "baseSchema": {
+                  "names": [
+                    "c_custkey",
+                    "c_name",
+                    "c_address",
+                    "c_nationkey",
+                    "c_phone",
+                    "c_acctbal",
+                    "c_mktsegment",
+                    "c_comment"
+                  ],
+                  "struct": {
+                    "types": [
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "fp64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      }
+                    ],
+                    "nullability": "NULLABILITY_REQUIRED"
+                  }
+                },
+                "namedTable": {
+                  "names": [
+                    "customer"
+                  ]
+                }
+              }
+            },
+            "right": {
+              "read": {
+                "common": {
+                  "direct": {}
+                },
+                "baseSchema": {
+                  "names": [
+                    "n_nationkey",
+                    "n_name",
+                    "n_regionkey",
+                    "n_comment"
+                  ],
+                  "struct": {
+                    "types": [
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "i64": {
+                          "nullability": "NULLABILITY_REQUIRED"
+                        }
+                      },
+                      {
+                        "string": {
+                          "nullability": "NULLABILITY_NULLABLE"
+                        }
+                      }
+                    ],
+                    "nullability": "NULLABILITY_REQUIRED"
+                  }
+                },
+                "namedTable": {
+                  "names": [
+                    "nation"
+                  ]
+                }
+              }
+            },
+            "expression": {
+              "scalarFunction": {
+                "functionReference": 262,
+                "outputType": {
+                  "bool": {
+                    "nullability": "NULLABILITY_REQUIRED"
+                  }
+                },
+                "arguments": [
+                  {
+                    "value": {
+                      "selection": {
+                        "directReference": {
+                          "structField": {
+                            "field": 3
+                          }
+                        },
+                        "rootReference": {}
+                      }
+                    }
+                  },
+                  {
+                    "value": {
+                      "selection": {
+                        "directReference": {
+                          "structField": {
+                            "field": 8
+                          }
+                        },
+                        "rootReference": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "type": "JOIN_TYPE_INNER"
+          }
+        },
+        "names": [
+          "c_custkey",
+          "c_name",
+          "c_address",
+          "c_nationkey",
+          "c_phone",
+          "c_acctbal",
+          "c_mktsegment",
+          "c_comment",
+          "n_nationkey",
+          "n_name",
+          "n_regionkey",
+          "n_comment"
+        ]
+      }
+    }
+  ],
+  "version": {
+    "minorNumber": 79
+  },
+  "extensionUrns": [
+    {
+      "extensionUrnAnchor": 10,
+      "urn": "extension:io.substrait:functions_comparison"
+    }
+  ],
+  "sql_query": "SELECT * FROM customer INNER JOIN nation ON c_nationkey = n_nationkey"
+}
